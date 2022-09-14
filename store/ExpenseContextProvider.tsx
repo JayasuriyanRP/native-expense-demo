@@ -30,7 +30,7 @@ const DUMMY_EXPENSE: ExpenseModel[] = [
     id: "e4",
     description: "Samsung S6 Tablet",
     amount: 32000,
-    date: new Date("2022-07-11"),
+    date: new Date("2022-08-14"),
   },
   {
     id: "e5",
@@ -58,10 +58,9 @@ const ExpenseContextProvider: React.FC<ExpenseContextProviderProps> = ({
     DUMMY_EXPENSE
   );
 
-  console.log(expensesState);
   return (
     <ExpenseContext.Provider
-      value={{ expense: expensesState, dispatch: dispatchAction }}
+      value={{ expenses: expensesState, dispatch: dispatchAction }}
     >
       {children}
     </ExpenseContext.Provider>

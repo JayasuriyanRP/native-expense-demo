@@ -58,8 +58,6 @@ export const ExpenseReducer = (
       updatedExpenses[indexToUpdate] = updatedExpense;
       return updatedExpenses;
     case ActionType.Delete:
-      console.log(action.payload.id);
-      console.log("Deleted...", action.payload.id);
       return state.filter((x) => x.id !== action.payload.id);
     default:
       return state;

@@ -36,7 +36,6 @@ const ManageExpenses = () => {
 
   function handleDeleteExpense() {
     if (expenseId) {
-      console.log(expenseId);
       expenseContext?.dispatch({
         type: ActionType.Delete,
         payload: { id: expenseId },
@@ -50,17 +49,25 @@ const ManageExpenses = () => {
   }
 
   function handleconfirmExpense() {
-    let expenseData = expenseContext.expense;
+    let expenseData = expenseContext.expenses;
     if (isEdit) {
       var expense = expenseData.find((x) => x.id === expenseId);
       if (expense) {
         expenseContext.dispatch({
           type: ActionType.Update,
-          payload: { ...expense },
+          payload: { ...expense, id: expenseId, date: new Date() },
         });
       }
       // expenseContext?.updateExpense(expenseId, expenseContext)
     } else {
+      expenseContext.dispatch({
+        type: ActionType.Add,
+        payload: {
+          description: "Test",
+          amount: 12.34,
+          date: new Date(),
+        },
+      });
     }
     handleGoBack();
   }
