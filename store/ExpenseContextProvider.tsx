@@ -29,7 +29,7 @@ const DUMMY_EXPENSE: ExpenseModel[] = [
   {
     id: "e4",
     description: "Samsung S6 Tablet",
-    amount: 32000,
+    amount: 31986,
     date: new Date("2022-08-14"),
   },
   {
@@ -43,6 +43,18 @@ const DUMMY_EXPENSE: ExpenseModel[] = [
     description: "Cell Charger",
     amount: 600,
     date: new Date("2022-07-20"),
+  },
+  {
+    id: "e7",
+    description: "Tablet case",
+    amount: 648,
+    date: new Date("2022-09-11"),
+  },
+  {
+    id: "e8",
+    description: "Tablet S Pen",
+    amount: 399,
+    date: new Date("2022-09-07"),
   },
 ];
 
