@@ -1,10 +1,14 @@
 import { View, StyleSheet, Text, Alert } from "react-native";
 import Input from "./Input";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ExpenseModel } from "../../model/Expenses";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ExpenseNavStackParamList } from "../../screens/NavigationProps";
 import Button from "../UI/Button";
+import DatePicker from "@react-native-community/datetimepicker";
+import IconButton from "../UI/IconButton";
+import { GlobalStyles } from "../../constants/styles";
+import DatePickerInput from "./DatePickerInput";
 
 interface ExpenseFormProps {
   currentExpense: ExpenseModel | undefined;
@@ -39,13 +43,13 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
     date: {
       value: currentExpense
         ? currentExpense.date.toISOString().slice(0, 10)
-        : "",
+        : new Date().toISOString().slice(0, 10),
       isValid: true,
     },
     description: {
       value: currentExpense
         ? currentExpense.description.trimEnd().trimStart()
-        : "",
+        : "Test 1",
       isValid: true,
     },
     amount: {
@@ -113,16 +117,17 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             }}
             isValid={inputs.amount.isValid}
           />
-          <Input
+          <DatePickerInput
             label="Date"
             style={styles.rowInput}
             textInputConfig={{
               value: inputs.date.value,
               placeholder: "YYYY-MM-DD",
+              keyboardType: "decimal-pad",
               maxLength: 10,
-              onChangeText: inputChangedHandler.bind(this, "date"),
             }}
             isValid={inputs.date.isValid}
+            onValueChange={inputChangedHandler.bind(this, "date")}
           />
         </View>
         <Input

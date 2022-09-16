@@ -4,22 +4,17 @@ export enum ActionType {
   Add = "ADD",
   Update = "UPDATE",
   Delete = "DELETE",
+  SetExpenses = "SETEXPENSES",
 }
 
 type ExpensePayload = {
-  [ActionType.Add]: {
-    description: string;
-    date: Date;
-    amount: number;
-  };
-  [ActionType.Update]: {
-    id: string;
-    description: string;
-    date: Date;
-    amount: number;
-  };
+  [ActionType.Add]: ExpenseModel;
+  [ActionType.Update]: ExpenseModel;
   [ActionType.Delete]: {
     id: string;
+  };
+  [ActionType.SetExpenses]: {
+    expenses: ExpenseModel[];
   };
 };
 
@@ -43,8 +38,7 @@ export const ExpenseReducer = (
 ) => {
   switch (action.type) {
     case ActionType.Add:
-      const id = new Date().toString() + Math.random().toString();
-      return [{ ...action.payload, id: id }, ...state];
+      return [{ ...action.payload }, ...state];
     case ActionType.Update:
       const indexToUpdate = state.findIndex((x) => x.id === action.payload.id);
       const expenseToUpdate = state[indexToUpdate];
@@ -59,6 +53,8 @@ export const ExpenseReducer = (
       return updatedExpenses;
     case ActionType.Delete:
       return state.filter((x) => x.id !== action.payload.id);
+    case ActionType.SetExpenses:
+      return [...action.payload.expenses.reverse()];
     default:
       return state;
   }

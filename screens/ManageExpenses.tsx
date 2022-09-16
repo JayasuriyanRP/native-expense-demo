@@ -1,16 +1,17 @@
-import { StyleSheet, View, TextInput } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { GlobalStyles } from "../constants/styles";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { ExpenseNavStackParamList } from "./NavigationProps";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useLayoutEffect, useContext } from "react";
+import { useLayoutEffect, useContext, useState } from "react";
 import IconButton from "../components/UI/IconButton";
-import Button from "../components/UI/Button";
 import { ExpenseContext } from "../store/ExpenseContext";
 import { ActionType } from "../store/ExpenseReducer";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 import { ExpenseModel } from "../model/Expenses";
+import { storeExpense, deleteExpense, updateExpense } from "../api/http";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 
 type ManageExpensesRoute = RouteProp<
   ExpenseNavStackParamList,
@@ -26,6 +27,8 @@ const ManageExpenses = () => {
   const router = useRoute<ManageExpensesRoute>();
   const navigation = useNavigation<ManageExpensesNavProps>();
   const expenseContext = useContext(ExpenseContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
 
   const expenseId = router.params?.expenseId;
   const isEdit = !!expenseId;
@@ -39,39 +42,68 @@ const ManageExpenses = () => {
     });
   }, [navigation, isEdit]);
 
-  function handleDeleteExpense() {
+  async function handleDeleteExpense() {
     if (expenseId) {
-      expenseContext?.dispatch({
-        type: ActionType.Delete,
-        payload: { id: expenseId },
-      });
+      setIsLoading(true);
+      try {
+        await deleteExpense(expenseId);
+        expenseContext?.dispatch({
+          type: ActionType.Delete,
+          payload: { id: expenseId },
+        });
+        handleGoBack();
+      } catch (err) {
+        setError("Could not delete an Expense...");
+        setIsLoading(false);
+      }
     }
-    handleGoBack();
   }
 
   function handleGoBack() {
     navigation.goBack();
   }
 
-  function submitHandler(expense: ExpenseModel) {
+  async function submitHandler(expense: ExpenseModel) {
     console.log(expense);
+    setIsLoading(true);
     if (isEdit) {
       if (expense) {
-        expenseContext.dispatch({
-          type: ActionType.Update,
-          payload: { ...expense, id: expenseId },
-        });
+        try {
+          expenseContext.dispatch({
+            type: ActionType.Update,
+            payload: { ...expense, id: expenseId },
+          });
+          await updateExpense(expenseId, { ...expense });
+          handleGoBack();
+        } catch (err) {
+          setError("Cannot Update the Expense...");
+        }
       }
       // expenseContext?.updateExpense(expenseId, expenseContext)
     } else {
-      expenseContext.dispatch({
-        type: ActionType.Add,
-        payload: { ...expense },
-      });
+      try {
+        const id = await storeExpense(expense);
+        expenseContext.dispatch({
+          type: ActionType.Add,
+          payload: { ...expense, id: id },
+        });
+        handleGoBack();
+      } catch (err) {
+        console.log("add error", err);
+        setError("Cannot add new expense...");
+      }
     }
-    handleGoBack();
+    setIsLoading(false);
   }
 
+  if (error && !isLoading) {
+    return (
+      <ErrorOverlay message={error} onConfirm={() => setError(undefined)} />
+    );
+  }
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
     <View style={styles.container}>
       <ExpenseForm
