@@ -6,7 +6,7 @@ function authenticate<T>(
   mode: "signUp" | "signInWithPassword",
   userInfo: IUserCredential
 ) {
-  const API_KEY = "AIzaSyDoHDXUJJj3c3h2-HgcooMNDSbaPe_cEcw";
+  const API_KEY = "";
   const url = `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${API_KEY}`;
 
   return axios.post<T>(url, { ...userInfo, returnSecureToken: true });
