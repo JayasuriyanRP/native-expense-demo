@@ -28,6 +28,7 @@ const PlacesList: FC<PlacesListProps> = ({ places }) => {
 
   return (
     <FlatList
+      style={styles.list}
       data={places}
       keyExtractor={(item) => item.id}
       renderItem={renderListItem}
@@ -44,6 +45,9 @@ const styles = StyleSheet.create({
   fallbackText: {
     fontSize: 16,
     color: Colors.primary50,
+  },
+  list: {
+    margin: 24,
   },
 });
 

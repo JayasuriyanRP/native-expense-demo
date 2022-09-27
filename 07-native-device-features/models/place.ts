@@ -1,7 +1,7 @@
 export interface IPlace {
   title: string;
   imageUri: string;
-  address: string;
+  // address: string;
   location: ICoordinates;
   id: string;
 }
@@ -16,7 +16,7 @@ export class Place implements IPlace {
   constructor(
     public title: string,
     public imageUri: string,
-    public address: string,
+    // public address: string,
     public location: ICoordinates
   ) {
     this.id = new Date().toString() + Math.random().toString();

@@ -11,8 +11,14 @@ import { Colors } from "../../constants/styles";
 import ImagePicker from "./ImagePicker";
 import LocationPicker from "./LocationPicker";
 import Button from "../ui/Button";
-import { ICoordinates } from "../../models/place";
-const PlaceForm = () => {
+import { ICoordinates, Place } from "../../models/place";
+import React from "react";
+
+interface PlaceFormProps {
+  onCreatePlace: (place: Place) => void;
+}
+
+const PlaceForm: React.FC<PlaceFormProps> = ({ onCreatePlace }) => {
   const [enteredTitle, setEnteredTitle] = useState<string>();
   const [pickedImage, setPickedImage] = useState<string>();
   const [pickedLocation, setPickedLocation] = useState<ICoordinates>();
@@ -33,7 +39,11 @@ const PlaceForm = () => {
   );
 
   function saveFormHandler() {
-    console.log(enteredTitle, pickedImage, pickedLocation);
+    if (enteredTitle && pickedImage && pickedLocation) {
+      let place = new Place(enteredTitle, pickedImage, pickedLocation);
+      console.log(enteredTitle, pickedImage, pickedLocation);
+      onCreatePlace(place);
+    }
   }
 
   return (
