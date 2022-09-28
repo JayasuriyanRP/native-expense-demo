@@ -1,3 +1,4 @@
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { FC } from "react";
 import {
   View,
@@ -8,14 +9,30 @@ import {
 } from "react-native";
 import { Colors } from "../../constants/styles";
 import { IPlace } from "../../models/place";
+import { PlaceStackParamList } from "../../Stack/PlacesNavStack";
 import PlaceItem from "./PlaceItem";
+import { useNavigation } from "@react-navigation/native";
 
 interface PlacesListProps {
   places: IPlace[];
 }
+
+type AllPlacesNavProps = NativeStackNavigationProp<
+  PlaceStackParamList,
+  "AllPlaces"
+>;
+
 const PlacesList: FC<PlacesListProps> = ({ places }) => {
+  const naviagtion = useNavigation<AllPlacesNavProps>();
+
   const renderListItem = ({ item: place }: ListRenderItemInfo<IPlace>) => {
-    return <PlaceItem place={place} onSelected={() => {}} />;
+    const onSelectItem = (id: string) => {
+      naviagtion.navigate("PlaceDetail", {
+        placeId: id,
+      });
+    };
+
+    return <PlaceItem place={place} onSelected={onSelectItem} />;
   };
 
   if (!places || places.length === 0) {

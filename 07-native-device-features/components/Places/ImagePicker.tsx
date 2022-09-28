@@ -20,13 +20,13 @@ const ImagePicker: FC<ImagePickerProps> = ({ onImagePicked }) => {
   const [selectedImage, setSelectedImage] = useState<string>();
 
   async function verifyPermission() {
-    if (cameraPermission?.status === PermissionStatus.UNDETERMINED) {
+    if (cameraPermission?.status === PermissionStatus.DENIED) {
       const permissionResponse = await requestPermission();
       console.log(permissionResponse);
       return permissionResponse.granted;
     }
 
-    if (cameraPermission?.status === PermissionStatus.DENIED) {
+    if (cameraPermission?.status === PermissionStatus.UNDETERMINED) {
       Alert.alert(
         "Insufficient Permission",
         "You need to provide camera permission"

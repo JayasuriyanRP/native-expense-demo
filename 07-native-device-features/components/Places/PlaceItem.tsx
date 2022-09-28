@@ -5,14 +5,14 @@ import { IPlace } from "../../models/place";
 
 interface PlaceItemProps {
   place: IPlace;
-  onSelected: () => void;
+  onSelected: (id: string) => void;
 }
 
 const PlaceItem: FC<PlaceItemProps> = ({ place, onSelected }) => {
   return (
     <Pressable
       style={({ pressed }) => [pressed && styles.pressed, styles.item]}
-      onPress={onSelected}
+      onPress={onSelected.bind(this, place.id)}
     >
       <Image style={styles.image} source={{ uri: place.imageUri }} />
       <View style={styles.info}>

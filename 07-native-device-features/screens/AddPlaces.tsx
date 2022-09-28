@@ -4,6 +4,7 @@ import PlaceForm from "../components/Places/PlaceForm";
 import { PlaceStackParamList } from "../Stack/PlacesNavStack";
 import { Place } from "../models/place";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { addPlace } from "../util/database";
 
 type AddPlaceNavProps = NativeStackNavigationProp<
   PlaceStackParamList,
@@ -14,10 +15,9 @@ type AddPlaceRoute = RouteProp<PlaceStackParamList, "AddPlace">;
 const AddPlace: FC = () => {
   const navigation = useNavigation<AddPlaceNavProps>();
 
-  function handlePlaceCreation(place: Place) {
-    navigation.navigate("AllPlaces", {
-      place: place,
-    });
+  async function handlePlaceCreation(place: Place) {
+    await addPlace(place);
+    navigation.navigate("AllPlaces");
   }
   return <PlaceForm onCreatePlace={handlePlaceCreation} />;
 };

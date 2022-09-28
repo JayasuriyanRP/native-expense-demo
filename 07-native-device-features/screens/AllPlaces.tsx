@@ -12,22 +12,30 @@ import IconButton from "../components/ui/IconButton";
 import { PlaceStackParamList } from "../Stack/PlacesNavStack";
 import { useState } from "react";
 import { IPlace, Place } from "../models/place";
+import { fetchPlaces } from "../util/database";
 
 type AuthNavProps = NativeStackNavigationProp<PlaceStackParamList, "AllPlaces">;
 
-type AllPlaceRoute = RouteProp<PlaceStackParamList, "AllPlaces">;
+// type AllPlaceRoute = RouteProp<PlaceStackParamList, "AllPlaces">;
 
 const AllPlaces: React.FC = () => {
   const navigation = useNavigation<AuthNavProps>();
-  const route = useRoute<AllPlaceRoute>();
+  // const route = useRoute<AllPlaceRoute>();
 
   const isFocused = useIsFocused();
 
   const [loadPlace, setLoadPlace] = useState<IPlace[]>([]);
 
   useEffect(() => {
-    if (isFocused && route.params && route.params.place) {
-      setLoadPlace((current) => [...current, route.params.place]);
+    async function loadPlaces() {
+      const result = await fetchPlaces();
+      setLoadPlace(result);
+    }
+
+    if (isFocused) {
+      // if (isFocused && route.params && route.params.place) {
+      loadPlaces();
+      //setLoadPlace((current) => [...current, route.params.place]);
     }
   }, [isFocused]);
 

@@ -17,8 +17,10 @@ export class Place implements IPlace {
     public title: string,
     public imageUri: string,
     // public address: string,
-    public location: ICoordinates
+    public location: ICoordinates,
+    private uniqId?: number
   ) {
-    this.id = new Date().toString() + Math.random().toString();
+    this.id =
+      uniqId?.toString() ?? new Date().toString() + Math.random().toString();
   }
 }

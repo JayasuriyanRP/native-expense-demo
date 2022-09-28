@@ -4,7 +4,8 @@ import AddPlace from "../screens/AddPlaces";
 import Map from "../screens/Map";
 import { ParamListBase } from "@react-navigation/native";
 import { Colors } from "../constants/styles";
-import { ICoordinates } from "../models/place";
+import { ICoordinates, IPlace } from "../models/place";
+import PlaceDetails from "../screens/PlaceDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,13 @@ const PlacesNavStack = () => {
           title: "Add a new Place",
         }}
       />
+      <Stack.Screen
+        name="PlaceDetail"
+        component={PlaceDetails}
+        options={{
+          title: "Loading Place....",
+        }}
+      />
       <Stack.Screen name="Map" component={Map} />
     </Stack.Navigator>
   );
@@ -42,6 +50,9 @@ export type PlaceStackParamList = {
   AllPlaces: any;
   AddPlace: {
     coordinates?: ICoordinates;
+  };
+  PlaceDetail: {
+    placeId: string;
   };
   Map: any;
 };
