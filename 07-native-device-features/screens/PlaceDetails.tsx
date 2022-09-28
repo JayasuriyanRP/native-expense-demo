@@ -34,13 +34,23 @@ const PlaceDetails: React.FC = () => {
     fetchData();
   }, [selectedPlaceId]);
 
-  function handleViewOnMap() {}
+  if (!currentPlace) {
+    return <Text style={styles.fallback}>No Place Fetched</Text>;
+  }
+
+  function handleViewOnMap() {
+    navigation.navigate("Map", {
+      coordinates: currentPlace?.location,
+    });
+  }
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: currentPlace?.imageUri }} />
       <View style={styles.locationContainer}>
         <View style={styles.addressContainer}>
-          <Text style={styles.address}></Text>
+          <Text style={styles.address}>
+            {currentPlace.location.lat} - {currentPlace.location.lng}
+          </Text>
         </View>
         <OutlinedButton icon={"map"} onPress={handleViewOnMap}>
           View on Map
@@ -50,6 +60,11 @@ const PlaceDetails: React.FC = () => {
   );
 };
 const styles = StyleSheet.create({
+  fallback: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   image: {
     height: "35%",
     minHeight: 300,

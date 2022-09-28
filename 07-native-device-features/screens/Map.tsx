@@ -4,16 +4,26 @@ import { useState, useLayoutEffect, useCallback } from "react";
 import { ICoordinates } from "../models/place";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { PlaceStackParamList } from "../Stack/PlacesNavStack";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import IconButton from "../components/ui/IconButton";
 
 type MapNavProps = NativeStackNavigationProp<PlaceStackParamList, "Map">;
+type MapRoute = RouteProp<PlaceStackParamList, "Map">;
 
 const Map = () => {
-  const [selectedLocation, setSelectedLocation] = useState<LatLng>();
+  const { params } = useRoute<MapRoute>();
+  const initialLocation = params && params.coordinates;
+
+  const [selectedLocation, setSelectedLocation] = useState<LatLng | undefined>(
+    initialLocation && {
+      latitude: initialLocation.lat,
+      longitude: initialLocation.lng,
+    }
+  );
+
   const region: Region = {
-    latitude: 11.654275,
-    longitude: 77.766467,
+    latitude: initialLocation ? initialLocation.lat : 11.654275,
+    longitude: initialLocation ? initialLocation.lng : 77.766467,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   };
@@ -21,6 +31,9 @@ const Map = () => {
   const navigation = useNavigation<MapNavProps>();
 
   function handleSelectLocation(mapEvent: MapEvent) {
+    if (initialLocation) {
+      return;
+    }
     console.log(mapEvent);
     setSelectedLocation({
       latitude: mapEvent.nativeEvent.coordinate.latitude,
@@ -43,6 +56,9 @@ const Map = () => {
   }, [navigation, selectedLocation]);
 
   useLayoutEffect(() => {
+    if (initialLocation) {
+      return;
+    }
     navigation.setOptions({
       headerRight: ({ tintColor }) => (
         <IconButton

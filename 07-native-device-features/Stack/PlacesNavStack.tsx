@@ -54,5 +54,7 @@ export type PlaceStackParamList = {
   PlaceDetail: {
     placeId: string;
   };
-  Map: any;
+  Map: {
+    coordinates?: ICoordinates;
+  };
 };
