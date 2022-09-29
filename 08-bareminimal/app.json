@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "08-bareminimal",
+    "slug": "08-bareminimal",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
