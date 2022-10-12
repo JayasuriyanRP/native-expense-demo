@@ -1,12 +1,11 @@
 {
   "expo": {
-    "name": "Meals App",
-    "slug": "new_navigation",
-    "version": "0.1.0",
+    "name": "10-notification",
+    "slug": "10-notification",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "backgroundColor": "#24180f",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -15,28 +14,27 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "buildNumber": "0.1.0"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },
-      "versionCode": 1,
-      "package": "com.meaw.recipebook"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "e05a7035-04fb-427e-8f46-b61e3a3c0122"
-      }
-    }
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#ffffff"
+        }
+      ]
+    ]
   }
 }
